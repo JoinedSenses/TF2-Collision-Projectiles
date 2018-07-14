@@ -4,17 +4,12 @@
 #pragma semicolon 1
 
 #include <sourcemod>
-#include <sdktools>
-#include <sdkhooks>
-#include <tf2>
 #include <tf2_stocks>
 #include <collisionhook>
 
 ConVar g_hTeamOnly;
-bool   g_bTeamOnly;
 
-public Plugin myinfo =
-{
+public Plugin myinfo = {
     name = "stopstickybounce",
     author = "Larry",
     description = "Prevent stickies from bouncing off players",
@@ -22,20 +17,11 @@ public Plugin myinfo =
     url = "https://steamcommunity.com/id/pancakelarry"
 };
 
-public OnPluginStart()
-{
+public OnPluginStart() {
    g_hTeamOnly = CreateConVar("stopstickybounce_teamonly", "0", "Stop stickies from bouncing off only friendly players", FCVAR_NOTIFY, true, 0.0, true, 1.0);
-
-   HookConVarChange(g_hTeamOnly, OnTeamOnlyChanged);
 }
 
-void OnTeamOnlyChanged(ConVar convar, const char[] oldValue, const char[] newValue)
-{
-	g_bTeamOnly = StringToInt(newValue) == 1 ? true : false;
-}
-
-public Action CH_PassFilter(ent1, ent2, &bool:result)
-{
+public Action CH_PassFilter(ent1, ent2, &bool:result) {
 	char ent1name[256];
 	char ent2name[256];
 	GetEntityClassname(ent1, ent1name, sizeof(ent1name));
@@ -53,29 +39,28 @@ public Action CH_PassFilter(ent1, ent2, &bool:result)
 		player = ent1;
 		projectile = ent2;
 	}
+	else if (!(StrContains(ent1name, "obj_") || StrContains(ent2name, "obj_"))){
+		result = false;
+		return Plugin_Handled;
+	}
 	else {
 		return Plugin_Continue;
 	}
 
-	if(1 <= player <= MaxClients)
-	{
+	if(1 <= player <= MaxClients) {
 		int owner = GetEntPropEnt(projectile, Prop_Data, "m_hThrower");
 		if(!(1 <= owner <= MaxClients))
 			return Plugin_Handled;
-		if(g_bTeamOnly)
-		{
-			if(TF2_GetClientTeam(owner) == TF2_GetClientTeam(player))
-			{
+		if(g_hTeamOnly.BoolValue) {
+			if(TF2_GetClientTeam(owner) == TF2_GetClientTeam(player)) {
 				result = false;
 				return Plugin_Handled;
 			}
 		}
-		else if (owner != player)
-		{
+		else if (owner != player) {
 			result = false;
 			return Plugin_Handled;
 		}
 	}
-
 	return Plugin_Continue;
 }
