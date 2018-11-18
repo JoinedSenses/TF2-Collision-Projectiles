@@ -12,7 +12,7 @@
 
 ConVar g_hTeamOnly;
 
-public Plugin myinfo ={
+public Plugin myinfo = {
     name = "projectilecollision",
     author = "Larry, JoinedSenses",
     description = "Prevent projectiles from colliding with players and buildings",
@@ -20,12 +20,12 @@ public Plugin myinfo ={
     url = "https://steamcommunity.com/id/pancakelarry"
 };
 
-public void OnPluginStart(){
+public void OnPluginStart() {
 	CreateConVar("sm_projectilecollision_version", PLUGIN_VERSION);
 	g_hTeamOnly = CreateConVar("projectilecollision_teamonly", "1", "Prevent collision on team only?", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 }
 
-public Action CH_PassFilter(int ent1, int ent2, bool& result){
+public Action CH_PassFilter(int ent1, int ent2, bool& result) {
 	char ent1name[256];
 	GetEntityClassname(ent1, ent1name, sizeof(ent1name));
 
