@@ -88,7 +88,6 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 		return Plugin_Continue;
 	}
 
-	int obj;
 	if (StrContains(ent1name, "obj_") != -1) {
 		owner = GetEntPropEnt(ent1, Prop_Send, "m_hBuilder");
 		if (StrContains(ent2name, "obj_") != -1) {
@@ -111,8 +110,6 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 		return Plugin_Continue;
 	}
 
-	owner = GetEntPropEnt(obj, Prop_Send, "m_hBuilder");
-
 	if (!IsValidClient(player)) {
 		return Plugin_Continue;
 	}
@@ -128,7 +125,6 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 		result = false;
 		return Plugin_Handled;
 	}
-
 
 	return Plugin_Continue;
 }
