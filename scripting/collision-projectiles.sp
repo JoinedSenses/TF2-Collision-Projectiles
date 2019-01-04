@@ -8,7 +8,7 @@
 #include <tf2_stocks>
 #include <collisionhook>
 
-#define PLUGIN_VERSION "1.0.9"
+#define PLUGIN_VERSION "1.0.10"
 #define PLUGIN_DESCRIPTION "Prevent projectiles from colliding with players and buildings"
 
 ConVar cvarTeamOnly;
@@ -74,7 +74,7 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 			return Plugin_Handled;
 		}
 
-		bool other = owner != player;
+		bool other = IsValidClient(owner) && (owner != player);
 		if (cvarTeamOnly.BoolValue) {
 			if (other && TF2_GetClientTeam(owner) == TF2_GetClientTeam(player)) {
 				result = false;
