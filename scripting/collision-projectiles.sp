@@ -65,6 +65,9 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 		else if (StrContains(classname, "projectile_rocket") != -1) {
 			owner = GetEntPropEnt(projectile, Prop_Send, "m_hOwnerEntity");
 		}
+		else if (StrContains(classname, "projectile_energy_ball") != -1) {
+			owner = GetEntPropEnt(projectile, Prop_Send, "m_hOwnerEntity");
+		}
 		else if (StrContains(classname, "projectile_sentryrocket") != -1) {
 			int sentry = GetEntPropEnt(projectile, Prop_Send, "m_hOwnerEntity");
 			owner = GetEntPropEnt(sentry, Prop_Send, "m_hBuilder");	
