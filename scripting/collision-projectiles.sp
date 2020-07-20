@@ -8,7 +8,7 @@
 #include <tf2_stocks>
 #include <collisionhook>
 
-#define PLUGIN_VERSION "1.0.10"
+#define PLUGIN_VERSION "1.0.11"
 #define PLUGIN_DESCRIPTION "Prevent projectiles from colliding with players and buildings"
 
 ConVar cvarTeamOnly;
@@ -22,7 +22,7 @@ public Plugin myinfo = {
 };
 
 public void OnPluginStart() {
-	CreateConVar("sm_projectilecollision_version", PLUGIN_VERSION, PLUGIN_DESCRIPTION, FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD).SetString(PLUGIN_VERSION);
+	CreateConVar("sm_projectilecollision_version", PLUGIN_VERSION, PLUGIN_DESCRIPTION, FCVAR_SPONLY|FCVAR_NOTIFY|FCVAR_DONTRECORD).SetString(PLUGIN_VERSION);
 	cvarTeamOnly = CreateConVar("projectilecollision_teamonly", "1", "Prevent collision on team only?", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 }
 
