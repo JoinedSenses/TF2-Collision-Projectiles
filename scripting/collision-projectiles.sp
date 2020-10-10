@@ -8,7 +8,7 @@
 #include <tf2_stocks>
 #include <collisionhook>
 
-#define PLUGIN_VERSION "1.0.11"
+#define PLUGIN_VERSION "1.0.12"
 #define PLUGIN_DESCRIPTION "Prevent projectiles from colliding with players and buildings"
 
 ConVar cvarTeamOnly;
@@ -70,23 +70,21 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 		}
 		else if (StrContains(classname, "projectile_sentryrocket") != -1) {
 			int sentry = GetEntPropEnt(projectile, Prop_Send, "m_hOwnerEntity");
-			owner = GetEntPropEnt(sentry, Prop_Send, "m_hBuilder");	
+			if (sentry != -1) {
+				owner = GetEntPropEnt(sentry, Prop_Send, "m_hBuilder");	
+			}
 		}
 		else {
 			result = false;
 			return Plugin_Handled;
 		}
 
-		bool other = IsValidClient(owner) && (owner != player);
-		if (cvarTeamOnly.BoolValue) {
-			if (other && TF2_GetClientTeam(owner) == TF2_GetClientTeam(player)) {
+		if (IsValidClient(owner) && (owner != player)) {
+			if (!cvarTeamOnly.BoolValue
+			|| TF2_GetClientTeam(owner) == TF2_GetClientTeam(player)) {
 				result = false;
 				return Plugin_Handled;
 			}
-		}
-		else if (other) {
-			result = false;
-			return Plugin_Handled;
 		}
 		return Plugin_Continue;
 	}
@@ -117,16 +115,12 @@ public Action CH_PassFilter(int ent1, int ent2, bool &result) {
 		return Plugin_Continue;
 	}
 
-	bool other = owner != player;
-	if (cvarTeamOnly.BoolValue) {
-		if (other && TF2_GetClientTeam(owner) == TF2_GetClientTeam(player)) {
+	if (owner != player) {
+		if (!cvarTeamOnly.BoolValue
+		|| TF2_GetClientTeam(owner) == TF2_GetClientTeam(player)) {
 			result = false;
 			return Plugin_Handled;
 		}
-	}
-	else if (other) {
-		result = false;
-		return Plugin_Handled;
 	}
 
 	return Plugin_Continue;
